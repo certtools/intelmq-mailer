@@ -1,0 +1,80 @@
+[general]
+name: REPORT TESTE
+start date: 11-07-2014 16:17:30
+time interval: 2:0:0:0
+date field: created_at
+
+[plugins]
+headers: singlerecipient
+body: filetemplate
+attachment: attachcsv
+send: rt
+
+[split keys]
+entity_id
+taxonomy
+
+[event fields]
+taxonomy
+type
+feed_code
+source_time
+ip
+host
+url
+email_address
+ptr
+asn
+as_name
+bgp_prefix
+registry
+source_ip
+source_port
+source_host
+source_email_address
+source_asn
+source_as_name
+source_cc
+destination_ip
+destination_port
+destination_host
+destination_email_address
+destination_asn
+destination_as_name
+destination_cc
+description
+status
+protocol
+target
+os_name
+os_version
+additional_information
+comment
+malware
+artifact_hash
+artifact_hash_type
+artifact_version
+
+[singlerecipient]
+to: mauro.silva@fccn.pt
+from: mauro.silva@fccn.pt
+subject: Relatório semanal: %(taxonomy)s
+
+[whois]
+id: entity_id
+
+[filetemplate]
+template: /opt/intelmailer/src/temp/template.txt
+
+[attachcsv]
+filename: report.csv
+zip
+
+[rt]
+username: <user>
+password: <password>
+url: http://<fqdn>/<rt path>/REST/1.0/
+investigation_subject: %(entity_id)s - %(taxonomy)s
+
+[rt investigation]
+_RTIR_Customer: entity_id

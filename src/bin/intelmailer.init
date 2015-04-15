@@ -1,0 +1,33 @@
+#! /bin/sh
+
+set -x
+
+PIDFILE=/var/run/intelmailer.pid
+INTELMAILER_HOME=/home/wolfgang/intelmailer/src/
+RUN_SCRIPT=$INTELMAILER_HOME/bin/intelmailer.sh
+USERNAME=wolfgang
+
+test -x $INTELMAILER_HOME || exit 0
+export PYTHONPATH=$INTELMAILER_HOME:$PYTHONPATH
+
+case "$1" in
+    start)
+        start-stop-daemon --start --oknodo --user $USERNAME --name intelmailer --make-pidfile --pidfile $PIDFILE --chuid $USERNAME --background --startas $RUN_SCRIPT
+    ;;
+    stop)
+        start-stop-daemon --stop --oknodo --user $USERNAME --pidfile $PIDFILE --retry=TERM/5/KILL/5
+    ;;
+    force-reload|restart)
+        $0 stop
+        $0 start
+    ;;
+    status)
+        start-stop-daemon --status --oknodo --user $USERNAME --pidfile $PIDFILE
+    ;;
+    *)
+       echo "Usage: $0 {start|stop|restart|force-reload|status}"
+       exit 1
+    ;;
+esac
+
+exit 0
